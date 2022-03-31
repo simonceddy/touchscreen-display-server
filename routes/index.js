@@ -1,17 +1,35 @@
 const { Router } = require('express');
-// const { Category, Item } = require('../db/models');
+const { Category } = require('../db/models');
 
 const router = Router();
 
-router.get('/categories', (req, res) => res.json('categories'));
+// List all categories
+router.get('/categories', (req, res) => Category.find(null, 'title media')
+  .exec()
+  .then((results) => res.json(results))
+  .catch(console.error));
 
-router.get('/category/:slug', (req, res) => (
-  res.json(`category ${req.params.slug}`)
-));
+// Get data for specific category
+router.get('/category/:slug', (req, res) => Category.findOne({
+  slug: req.params.slug
+})
+  .exec()
+  .then((result) => {
+    // console.log({ ...result });
+    res.json(result);
+  })
+  .catch(console.error));
 
-router.get('/category/:slug/item/:itemSlug', (req, res) => (
-  res.json(`item ${req.params.itemSlug}`)
-));
+// Get data for specific item from the given category
+// TODO query from category item subdocuments
+// TODO broken at present due to errors from subdocument slug generation
+// At present just use category data and route items in frontend
+// router.get('/category/:slug/item/:itemSlug', (req, res) => Item.findOne({
+//   slug: req.params.itemSlug
+// })
+//   .exec()
+//   .then((result) => res.json(result))
+//   .catch(console.error));
 
 // TODO Handle optional sub-category routes
 
