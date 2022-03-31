@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('./config');
 const db = require('./db/db');
 const { Category } = require('./db/models');
 const routes = require('./routes');
@@ -28,6 +29,9 @@ connect()
 
     app.use('/api', routes);
 
-    app.listen(3030, () => console.log('App running at http://localhost:3030'));
+    app.listen(
+      config.port,
+      () => console.log(`App running at http://localhost:${config.port}`)
+    );
   })
   .catch(console.error);
