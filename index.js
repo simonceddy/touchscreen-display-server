@@ -8,6 +8,7 @@ const routes = require('./routes');
 function saveModels() {
   const c = new Category({
     title: 'Test',
+    key: 'test',
     items: [
       new Item({
         title: 'Test item',

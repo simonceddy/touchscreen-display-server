@@ -5,7 +5,9 @@ const itemSchema = require('./itemSchema');
 const categorySchema = new db.Schema({
   title: String,
   items: [itemSchema],
-  slug: { type: String, slug: 'title', unique: true },
+  // TODO category keys
+  key: String,
+  // slug: { type: String, slug: 'title', unique: true },
   media: [] // placeholder field for front page image
 });
 

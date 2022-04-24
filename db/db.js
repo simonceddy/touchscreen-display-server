@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const slug = require('mongoose-slug-generator');
+// const slug = require('mongoose-slug-generator');
 
-mongoose.plugin(slug);
+// mongoose.plugin(slug);
 
 module.exports = mongoose;

@@ -10,8 +10,8 @@ router.get('/categories', (req, res) => Category.find(null, 'title media')
   .catch(console.error));
 
 // Get data for specific category
-router.get('/category/:slug', (req, res) => Category.findOne({
-  slug: req.params.slug
+router.get('/category/:key', (req, res) => Category.findOne({
+  key: req.params.key
 })
   .exec()
   .then((result) => {
