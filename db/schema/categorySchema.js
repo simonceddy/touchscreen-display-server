@@ -1,14 +1,10 @@
 /* eslint-disable func-names */
 const db = require('../db');
-const itemSchema = require('./itemSchema');
+const baseCategory = require('./baseCategory');
 
 const categorySchema = new db.Schema({
-  title: String,
-  items: [itemSchema],
-  // TODO category keys
-  key: String,
-  // slug: { type: String, slug: 'title', unique: true },
-  media: [] // placeholder field for front page image
+  ...baseCategory,
+  categories: [baseCategory],
 });
 
 // categorySchema.methods.getItems = function (cb) {
