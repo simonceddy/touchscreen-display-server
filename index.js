@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
+const bodyParser = require('body-parser');
 const config = require('./config');
 const db = require('./db/db');
 const { Category, Item } = require('./db/models');
@@ -34,13 +35,13 @@ async function connect() {
 }
 
 connect()
-  .then(async () => {
-    console.log('Connected to MongoDB');
-    // saveModels();
-  })
+  .then(() => console.log('Connected to MongoDB'))
   .catch(console.error);
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.send('Helll'));
 

@@ -1,24 +1,8 @@
 const { Router } = require('express');
-const { Category } = require('../db/models');
+const categories = require('./categories');
 
 const router = Router();
-
-// List all categories
-router.get('/categories', (req, res) => Category.find(null, 'title media')
-  .exec()
-  .then((results) => res.json(results))
-  .catch(console.error));
-
-// Get data for specific category
-router.get('/category/:key', (req, res) => Category.findOne({
-  key: req.params.key
-})
-  .exec()
-  .then((result) => {
-    // console.log({ ...result });
-    res.json(result);
-  })
-  .catch(console.error));
+router.use('/category', categories);
 
 // Get data for specific item from the given category
 // TODO query from category item subdocuments
