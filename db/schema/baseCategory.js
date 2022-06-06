@@ -2,8 +2,8 @@ const baseMedia = require('./baseMedia');
 const itemSchema = require('./itemSchema');
 
 const baseCategory = {
-  title: String,
-  key: String,
+  title: { type: String, required: true },
+  key: { type: String, unique: true, required: true },
   items: [itemSchema],
   frontImg: baseMedia
 };
