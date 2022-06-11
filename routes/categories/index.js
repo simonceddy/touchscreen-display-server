@@ -90,9 +90,36 @@ router.delete('/destroy/:key', (req, res) => {
 // TODO archive category
 // TODO archive subcategory
 // TODO archive item
-// TODO delete category
 // TODO delete subcategory
 // TODO delete item
+
+router.put('/archive/:key', (req, res) => Category
+  .findOneAndUpdate({ key: req.params.key }, { archived: true })
+  .exec()
+  .then((result) => res.json({
+    message: 'Category archived',
+    result,
+    success: true
+  }))
+  .catch((e) => res.json({
+    message: e.message,
+    e,
+    success: false
+  })));
+
+router.put('/unarchive/:key', (req, res) => Category
+  .findOneAndUpdate({ key: req.params.key }, { archived: false })
+  .exec()
+  .then((result) => res.json({
+    message: 'Category unarchived',
+    result,
+    success: true
+  }))
+  .catch((e) => res.json({
+    message: e.message,
+    e,
+    success: false
+  })));
 
 // List all categories
 router.get('/', (req, res) => Category.find(null, 'key title media frontImg items')
