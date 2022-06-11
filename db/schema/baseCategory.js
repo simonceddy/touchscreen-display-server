@@ -1,11 +1,9 @@
-const baseMedia = require('./baseMedia');
+const commonSchemaProps = require('./commonSchemaProps');
 const itemSchema = require('./itemSchema');
 
 const baseCategory = {
-  title: { type: String, required: true },
-  key: { type: String, unique: true, required: true },
+  ...commonSchemaProps,
   items: [itemSchema],
-  frontImg: baseMedia
 };
 
 module.exports = baseCategory;
