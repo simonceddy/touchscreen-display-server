@@ -1,12 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const config = require('./config');
 const db = require('./db/db');
 const routes = require('./routes');
 
 async function connect() {
-  await db.connect('mongodb://localhost:27017/display');
+  await db.connect(config.db.uri);
 }
 
 connect()
@@ -14,12 +16,12 @@ connect()
   .catch(console.error);
 
 const app = express();
-app.use(cors({
-  origin: 'http://localhost'
-}));
+app.use(cors(config.cors));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(fileUpload());
 
 app.use((req, res, next) => {
   console.log(req.url);
@@ -32,5 +34,5 @@ app.use('/api', routes);
 
 app.listen(
   config.port,
-  () => console.log(`App running at http://localhost:${config.port}`)
+  () => console.log(`App running at ${config.host}:${config.port}`)
 );
