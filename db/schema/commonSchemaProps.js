@@ -11,7 +11,7 @@ const commonSchemaProps = {
   key: {
     type: String, unique: true, index: true, sparse: true, default: createKey
   },
-  frontImg: baseMedia,
+  thumbnail: baseMedia,
   archived: { type: Boolean, default: false },
 };
 

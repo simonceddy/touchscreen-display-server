@@ -7,7 +7,7 @@ const router = Router();
 // Placeholder for creating new categories
 router.post('/create', (req, res) => {
   const {
-    title, categories, items, frontImg
+    title, categories, items, thumbnail
   } = req.body;
 
   // If no title is set return an error message
@@ -23,7 +23,7 @@ router.post('/create', (req, res) => {
     title,
     categories: categories || [],
     items: items || [],
-    frontImg: frontImg || null,
+    thumbnail: thumbnail || null,
   });
 
   return newCategory.save()
@@ -122,12 +122,9 @@ router.put('/unarchive/:key', (req, res) => Category
   })));
 
 // List all categories
-router.get('/', (req, res) => Category.find(null, 'key title media frontImg items')
+router.get('/', (req, res) => Category.find(null, 'key title media thumbnail items')
   .exec()
-  .then((results) => {
-    // console.log(results);
-    res.json(results);
-  })
+  .then((results) => res.json(results))
   .catch(console.error));
 
 // Get data for specific category
