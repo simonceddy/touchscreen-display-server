@@ -1,4 +1,5 @@
 const getKeyFromTitle = require('./getKeyFromTitle');
+const getMediaPath = require('./getMediaPath');
 
 function populateKeys(...items) {
   return items.map((item) => {
@@ -12,5 +13,6 @@ function populateKeys(...items) {
 
 module.exports = {
   getKeyFromTitle,
-  populateKeys
+  populateKeys,
+  getMediaPath,
 };

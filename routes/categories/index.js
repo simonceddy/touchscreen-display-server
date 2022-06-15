@@ -1,10 +1,28 @@
 const { Router } = require('express');
 const { Category } = require('../../db/models');
-// const { getKeyFromTitle, populateKeys } = require('../../util');
+
+// CATEGORY API ROUTES
+//
+// TODO remove previous state from various update responses, send key instead?
+// TODO move item category route
+// TODO move subcategory route
+
+// Lower priority:
+
+// Routing currently done client side.
+// Probably easier there but less expansion friendly.
+// TODO subcategory routing
+// TODO item routing
+
+// Quality of life routes - existing routes can be worked to do these tasks
+// TODO archive subcategory
+// TODO archive item
+// TODO delete subcategory
+// TODO delete item
 
 const router = Router();
 
-// Placeholder for creating new categories
+// Create a new category
 router.post('/create', (req, res) => {
   const {
     title, categories, items, thumbnail
@@ -50,7 +68,7 @@ router.post('/create', (req, res) => {
     });
 });
 
-// Placeholder for updating categories
+// Update category
 router.put('/update/:key', (req, res) => {
   const { key } = req.params;
   Category.findOneAndUpdate({ key }, {
@@ -67,8 +85,11 @@ router.put('/update/:key', (req, res) => {
     }));
 });
 
+// Delete category - cannot be undone
 router.delete('/destroy/:key', (req, res) => {
   const { key } = req.params;
+
+  // TODO media cleanup
   return Category.findOneAndDelete({ key })
     .exec()
     .then((result) => res.json({
@@ -83,16 +104,7 @@ router.delete('/destroy/:key', (req, res) => {
     }));
 });
 
-// TODO subcategory routing
-// TODO item routing
-// TODO move item category
-// TODO move subcategory
-// TODO archive category
-// TODO archive subcategory
-// TODO archive item
-// TODO delete subcategory
-// TODO delete item
-
+// Archive a category to non-destructively remove it from the current display
 router.put('/archive/:key', (req, res) => Category
   .findOneAndUpdate({ key: req.params.key }, { archived: true })
   .exec()
@@ -107,6 +119,7 @@ router.put('/archive/:key', (req, res) => Category
     success: false
   })));
 
+// Unarchive a category, returning it to the current display
 router.put('/unarchive/:key', (req, res) => Category
   .findOneAndUpdate({ key: req.params.key }, { archived: false })
   .exec()
@@ -127,7 +140,7 @@ router.get('/', (req, res) => Category.find(null, 'key title media thumbnail ite
   .then((results) => res.json(results))
   .catch(console.error));
 
-// Get data for specific category
+// Get data for given category
 router.get('/:key', (req, res) => {
   if (req.query.subcategory) {
     return Category.findOne({
