@@ -5,6 +5,8 @@ const imageThumbnail = require('image-thumbnail');
 const genThumbnail = require('simple-thumbnail');
 const { STORAGE_DIR } = require('../../support/consts');
 
+const thumbDir = path.resolve(STORAGE_DIR, 'thumbs');
+
 const genVideoThumb = async (mediaPath, thumbPath) => {
   try {
     const thumb = await genThumbnail(mediaPath, thumbPath, '?x300');
@@ -18,7 +20,7 @@ const genVideoThumb = async (mediaPath, thumbPath) => {
 const genImageThumb = async (mediaPath, thumbPath) => {
   try {
     const thumb = await imageThumbnail(mediaPath);
-    console.log(thumb);
+    fs.writeFileSync(thumbPath, thumb);
     return thumb;
   } catch (e) {
     console.error(e);
@@ -26,20 +28,41 @@ const genImageThumb = async (mediaPath, thumbPath) => {
   }
 };
 
+function recursiveMkdir(dirpath, dirs = []) {
+  let lastDir = dirpath;
+  dirs.map((dr) => {
+    const newPath = path.resolve(lastDir, dr);
+    if (!fs.existsSync(newPath)) {
+      fs.mkdirSync(newPath);
+    }
+    lastDir = newPath;
+    return dr;
+  });
+}
+
 // TODO handle media type
+/**
+ * Make Thumbnail
+ * @param {string} src The path to the source file
+ * @param {string} type The type of media
+ * @return {Promise<any>}
+ */
 async function makeThumbnail(src, type = 'image') {
   const mediaPath = path.resolve(STORAGE_DIR, src);
-  const thumbPath = path.resolve(STORAGE_DIR, `thumbs/${src}.png`);
+  const thumbPath = path.resolve(thumbDir, src);
+  if (!fs.existsSync(thumbDir)) fs.mkdirSync(thumbDir);
+  if (src.includes('/')) {
+    const bits = src.split('/');
+    bits.pop();
+    recursiveMkdir(thumbDir, bits);
+  }
   if (fs.existsSync(mediaPath)) {
     if (!fs.existsSync(thumbPath)) {
-      // TODO handle thumbnail generation for images - default for audio
       // TODO validate file type
       try {
         switch (type) {
           case 'video':
             await genVideoThumb(mediaPath, thumbPath);
-            break;
-          case 'audio':
             break;
           case 'image':
           default:
