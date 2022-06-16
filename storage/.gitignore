@@ -7,3 +7,4 @@ testing/*
 *.png
 *.gif
 *.db
+/img/*

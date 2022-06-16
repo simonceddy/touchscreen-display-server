@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload');
 const config = require('./config');
 const db = require('./db/db');
 const routes = require('./routes');
+const mediaRouter = require('./routes/media');
 
 async function connect() {
   await db.connect(config.db.uri);
@@ -22,6 +23,7 @@ connect()
   })
   .catch(console.error);
 
+// TODO add authentication for admin client
 const app = express();
 app.use(cors(config.cors));
 
@@ -38,6 +40,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.send('Helll'));
 
 app.use('/api', routes);
+app.use('/media', mediaRouter);
 
 app.listen(
   config.port,

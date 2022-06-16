@@ -4,7 +4,7 @@ const fs = require('fs');
 const genThumbnail = require('simple-thumbnail');
 const { getMediaPath } = require('../util');
 
-const router = Router();
+const mediaRouter = Router();
 
 const respondWithFile = (req, res, next, filename) => {
   if (!filename || fs.lstatSync(filename).isDirectory()) {
@@ -20,7 +20,7 @@ const respondWithFile = (req, res, next, filename) => {
 };
 
 // TODO File upload and thumb generation
-router.post('/upload', (req, res) => {
+mediaRouter.post('/upload', (req, res) => {
   console.log(req.files);
   // if no files respond with message
   // else Validate files
@@ -31,7 +31,8 @@ router.post('/upload', (req, res) => {
   });
 });
 
-router.delete('/destroy/:filename', (req, res) => {
+// TODO validate or change how this works
+mediaRouter.delete('/destroy/:filename(*)', (req, res) => {
   const fn = getMediaPath(req.params.filename);
   const thumb = getMediaPath(`thumbs/${req.params.filename}`);
 
@@ -42,14 +43,14 @@ router.delete('/destroy/:filename', (req, res) => {
   });
 });
 
-router.get('/thumbs/:filename', (req, res, next) => {
+mediaRouter.get('/thumbs/:filename(*)', (req, res, next) => {
   const fn = getMediaPath(`thumbs/${req.params.filename}`);
   return respondWithFile(req, res, next, fn);
 });
 
-router.get('/:filename', (req, res, next) => {
+mediaRouter.get('/:filename(*)', (req, res, next) => {
   const fn = getMediaPath(req.params.filename);
   return respondWithFile(req, res, next, fn);
 });
 
-module.exports = router;
+module.exports = mediaRouter;
