@@ -45,7 +45,7 @@ function recursiveMkdir(dirpath, dirs = []) {
  * Make Thumbnail
  * @param {string} src The path to the source file
  * @param {string} type The type of media
- * @return {Promise<any>}
+ * @return {Promise<boolean>}
  */
 async function makeThumbnail(src, type = 'image') {
   const mediaPath = path.resolve(STORAGE_DIR, src);
