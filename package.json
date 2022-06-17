@@ -18,11 +18,13 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "biguint-format": "^1.0.2",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
+    "flake-idgen": "^1.4.0",
     "image-thumbnail": "^1.0.15",
     "lodash": "^4.17.21",
     "mongoose": "^6.2.8",

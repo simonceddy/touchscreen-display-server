@@ -8,3 +8,4 @@ testing/*
 *.gif
 *.db
 /img/*
+/temp/*

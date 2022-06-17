@@ -135,7 +135,7 @@ router.put('/unarchive/:key', (req, res) => Category
   })));
 
 // List all categories
-router.get('/', (req, res) => Category.find(null, 'key title media thumbnail items')
+router.get('/', (req, res) => Category.find()
   .exec()
   .then((results) => res.json(results))
   .catch(console.error));

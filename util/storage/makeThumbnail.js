@@ -4,12 +4,13 @@ const path = require('path');
 const imageThumbnail = require('image-thumbnail');
 const genThumbnail = require('simple-thumbnail');
 const { STORAGE_DIR } = require('../../support/consts');
+const recursiveMkdir = require('./recusriveMkdir');
 
 const thumbDir = path.resolve(STORAGE_DIR, 'thumbs');
 
 const genVideoThumb = async (mediaPath, thumbPath) => {
   try {
-    const thumb = await genThumbnail(mediaPath, thumbPath, '?x300');
+    const thumb = await genThumbnail(mediaPath, `${thumbPath}.png`, '400x300');
     return thumb;
   } catch (e) {
     console.error(e);
@@ -19,7 +20,11 @@ const genVideoThumb = async (mediaPath, thumbPath) => {
 
 const genImageThumb = async (mediaPath, thumbPath) => {
   try {
-    const thumb = await imageThumbnail(mediaPath);
+    const thumb = await imageThumbnail(mediaPath, {
+      fit: 'cover',
+      height: 300,
+      width: 400,
+    });
     fs.writeFileSync(thumbPath, thumb);
     return thumb;
   } catch (e) {
@@ -27,18 +32,6 @@ const genImageThumb = async (mediaPath, thumbPath) => {
     return false;
   }
 };
-
-function recursiveMkdir(dirpath, dirs = []) {
-  let lastDir = dirpath;
-  dirs.map((dr) => {
-    const newPath = path.resolve(lastDir, dr);
-    if (!fs.existsSync(newPath)) {
-      fs.mkdirSync(newPath);
-    }
-    lastDir = newPath;
-    return dr;
-  });
-}
 
 // TODO handle media type
 /**
@@ -66,7 +59,6 @@ async function makeThumbnail(src, type = 'image') {
             break;
           case 'image':
           default:
-            console.log('attempt img thumb');
             await genImageThumb(mediaPath, thumbPath);
         }
         return true;

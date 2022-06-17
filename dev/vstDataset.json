@@ -128,15 +128,6 @@
               ]
             },
             {
-              "title": "SSL Native X-Comp v6",
-              "body": "Developed by Solid State Logic",
-              "key": "xCompV6",
-              "thumbnail": {"src":"img/Screen Shot 2022-04-08 at 2.47.48 pm.png"},
-              "media":[
-                {"src": "img/Screen Shot 2022-04-08 at 2.47.48 pm.png"}
-              ]
-            },
-            {
               "title": "SPL IRON",
               "body": "Developed in collaboration with Brainworx",
               "key": "splIron",
@@ -194,10 +185,18 @@
         }
       ],
       "items": [
-        
+        {
+          "title": "SSL Native X-Comp v6",
+          "body": "Developed by Solid State Logic",
+          "key": "xCompV6",
+          "thumbnail": {"src":"img/Screen Shot 2022-04-08 at 2.47.48 pm.png"},
+          "media":[
+            {"src": "img/Screen Shot 2022-04-08 at 2.47.48 pm.png"}
+          ]
+        },
         {
           "title": "Izotope Neutron Elements Compressor",
-          "body": "AI assisted channel strip - compressor section.",
+          "body": "AI assisted channel strip - compressor section shown.",
           "key": "neutronCompressor",
           "thumbnail": {"src":"img/Screen Shot 2022-05-04 at 1.12.13 am.png"},
           "media":[
@@ -496,6 +495,7 @@
               "key": "vcvRack",
               "thumbnail": {"src":"img/Screen Shot 2022-06-02 at 3.39.10 pm.png"},
               "media": [
+                { "src": "great painting of annihilation.mp4", "type": "video"},
                 { "src": "img/Screen Shot 2022-06-02 at 3.39.10 pm.png"}
               ],
               "body": "It's the best."
