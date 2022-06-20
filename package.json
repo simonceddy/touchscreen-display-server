@@ -24,6 +24,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
+    "file-type": "^17.1.2",
     "flake-idgen": "^1.4.0",
     "image-thumbnail": "^1.0.15",
     "lodash": "^4.17.21",

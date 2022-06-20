@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 const { Router } = require('express');
 const fs = require('fs');
-const genThumbnail = require('simple-thumbnail');
-const { getMediaPath } = require('../util');
+const {
+  getMediaPath,
+} = require('../util');
+const writeFilesToStorage = require('../util/storage/writeFilesToStorage');
 
 const mediaRouter = Router();
 
@@ -21,13 +23,26 @@ const respondWithFile = (req, res, next, filename) => {
 
 // TODO File upload and thumb generation
 mediaRouter.post('/upload', (req, res) => {
-  console.log(req.files);
-  // if no files respond with message
-  // else Validate files
+  if (!req.files) return res.json({ success: false, message: 'No files!' });
+
+  // Attempt to write all uploaded files to storage
+  const { filepaths, errors } = writeFilesToStorage(Object.values(req.files));
+
+  const eLen = Object.keys(errors).length;
+  if (eLen > 0) {
+    return res.json({
+      success: null,
+      message: 'Some errors were generated',
+      errors,
+      filepaths
+    });
+  }
   // create thumbnail for validated files
-  res.json({
-    successs: true,
-    message: 'upload'
+  return res.json({
+    success: true,
+    message: 'upload',
+    filepaths,
+    errors
   });
 });
 

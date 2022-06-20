@@ -1,5 +1,8 @@
+const getExtFromMime = require('./getExtFromMime');
+const getFlakeId = require('./getFlakeId');
 const getKeyFromTitle = require('./getKeyFromTitle');
 const getMediaPath = require('./getMediaPath');
+const getTypeFromMime = require('./getTypeFromMime');
 
 function populateKeys(...items) {
   return items.map((item) => {
@@ -12,6 +15,9 @@ function populateKeys(...items) {
 }
 
 module.exports = {
+  getFlakeId,
+  getExtFromMime,
+  getTypeFromMime,
   getKeyFromTitle,
   populateKeys,
   getMediaPath,
