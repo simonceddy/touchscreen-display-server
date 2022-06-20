@@ -6,6 +6,12 @@ const getFlakeId = require('../getFlakeId');
 const getTypeFromMime = require('../getTypeFromMime');
 const makeThumbnail = require('./makeThumbnail');
 
+/**
+ * Attempt to write files from an upload request to storage.
+ * Generates thumbnails where appropriate.
+ * @param {array} files Array of files from Request
+ * @returns {object} Returns an object containing filepaths and any errors.
+ */
 function writeFilesToStorage(files = []) {
   const filepaths = {};
   const errors = {};
