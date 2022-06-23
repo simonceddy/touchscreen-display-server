@@ -36,6 +36,7 @@ const respondWithFile = (req, res, next, filename) => {
 // Accepts compressed images and mp4 videos at present
 // TODO more file validation
 mediaRouter.post('/upload', (req, res) => {
+  console.log(req.body, req.files);
   if (!req.files) return res.json(failResponse('No files!'));
 
   // Attempt to write all uploaded files to storage
