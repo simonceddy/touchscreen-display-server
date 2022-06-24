@@ -1,8 +1,10 @@
 const { Router } = require('express');
 const categories = require('./categories');
+const testData = require('./testData');
 
 const router = Router();
 router.use('/category', categories);
+router.use('/testing', testData);
 
 // Get data for specific item from the given category
 // TODO query from category item subdocuments

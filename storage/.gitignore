@@ -9,3 +9,4 @@ testing/*
 *.db
 /img/*
 /temp/*
+testData.json
