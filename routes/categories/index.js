@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { Router } = require('express');
 const { Category } = require('../../db/models');
 
@@ -8,11 +9,6 @@ const { Category } = require('../../db/models');
 // TODO move subcategory route
 
 // Lower priority:
-
-// Routing currently done client side.
-// Probably easier there but less expansion friendly.
-// TODO subcategory routing
-// TODO item routing
 
 // Quality of life routes - existing routes can be worked to do these tasks
 // TODO archive subcategory
@@ -160,6 +156,67 @@ router.get('/:key', (req, res) => {
       res.json(result);
     })
     .catch(console.error);
+});
+
+// Direct route to given subcategory
+// Returns object with a 'parent' property containing the parent category key
+router.get('/:key/subCategory/:subKey', (req, res) => Category.findOne({
+  key: req.params.key,
+  categories: { $elemMatch: { key: req.params.subKey } }
+})
+  .exec()
+  .then((result) => {
+    if (!result) return res.json('Not found!');
+
+    return res.json({
+      parent: req.params.key,
+      ...result.categories.find((i) => i.key === req.params.subKey).toObject()
+    });
+  })
+  .iatih(console.error));
+
+// Direct route to given item
+// Returns object with a 'category' property containing the parent category key
+router.get('/:key/item/:itemKey', (req, res) => Category.findOne({
+  key: req.params.key,
+  items: { $elemMatch: { key: req.params.itemKey } }
+})
+  .exec()
+  .then((result) => {
+    if (!result) return res.json('Not found!');
+    return res.json({
+      category: req.params.key,
+      ...result.items.find((i) => i.key === req.params.itemKey).toObject()
+    });
+  })
+  .catch(console.error));
+
+router.put('/:key/addItem', (req, res) => {
+  // Add item to the given category
+  // TODO use $push mongo operator
+  console.log(req.body);
+  return res.json({
+    message: 'Add item'
+  });
+});
+
+router.put('/:key/addSubCategory', (req, res) => {
+  // Add sub-category to the given category
+  // TODO use $push mongo operator
+  console.log(req.body);
+  return res.json({
+    message: 'Add subcategory'
+  });
+});
+
+router.delete('/:key/removeItem/:itemKey', (req, res) => {
+  const { itemKey, key } = req.params;
+  res.json(`Deleting ${itemKey} from ${key}`);
+});
+
+router.delete('/:key/removeSubCategory/:subCategoryKey', (req, res) => {
+  const { subCategoryKey, key } = req.params;
+  res.json(`Deleting ${subCategoryKey} from ${key}`);
 });
 
 module.exports = router;
