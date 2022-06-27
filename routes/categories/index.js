@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const { Router } = require('express');
 const { Category } = require('../../db/models');
+const findAndMakeItemResponse = require('../../util/findAndMakeItemResponse');
 
 // CATEGORY API ROUTES
 //
@@ -187,7 +188,10 @@ router.get('/:key/item/:itemKey', (req, res) => Category.findOne({
     if (!result) return res.json('Not found!');
     return res.json({
       category: req.params.key,
-      ...result.items.find((i) => i.key === req.params.itemKey).toObject()
+      ...findAndMakeItemResponse(
+        req.params.itemKey,
+        result.items
+      )
     });
   })
   .catch(console.error));
@@ -210,8 +214,11 @@ router.get('/:key/subCategory/:subKey/item/:itemKey', (req, res) => Category.fin
     if (!result) return res.json('Not found!');
     return res.json({
       category: req.params.key,
-      ...result.categories.find((s) => s.key === req.params.subKey)
-        .items.find((i) => i.key === req.params.itemKey).toObject()
+      subCategory: req.params.subKey,
+      ...findAndMakeItemResponse(
+        req.params.itemKey,
+        result.categories.find((s) => s.key === req.params.subKey).items
+      )
     });
   })
   .catch(console.error));
