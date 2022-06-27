@@ -166,6 +166,7 @@ router.get('/:key/subCategory/:subKey', (req, res) => Category.findOne({
 })
   .exec()
   .then((result) => {
+    console.log(req.params);
     if (!result) return res.json('Not found!');
 
     return res.json({
@@ -173,7 +174,7 @@ router.get('/:key/subCategory/:subKey', (req, res) => Category.findOne({
       ...result.categories.find((i) => i.key === req.params.subKey).toObject()
     });
   })
-  .iatih(console.error));
+  .catch(console.error));
 
 // Direct route to given item
 // Returns object with a 'category' property containing the parent category key
@@ -187,6 +188,30 @@ router.get('/:key/item/:itemKey', (req, res) => Category.findOne({
     return res.json({
       category: req.params.key,
       ...result.items.find((i) => i.key === req.params.itemKey).toObject()
+    });
+  })
+  .catch(console.error));
+// And for sub-category items
+router.get('/:key/subCategory/:subKey/item/:itemKey', (req, res) => Category.findOne({
+  key: req.params.key,
+  categories: {
+    $elemMatch: {
+      key: req.params.subKey,
+      items: {
+        $elemMatch: {
+          key: req.params.itemKey
+        }
+      }
+    }
+  }
+})
+  .exec()
+  .then((result) => {
+    if (!result) return res.json('Not found!');
+    return res.json({
+      category: req.params.key,
+      ...result.categories.find((s) => s.key === req.params.subKey)
+        .items.find((i) => i.key === req.params.itemKey).toObject()
     });
   })
   .catch(console.error));

@@ -3,7 +3,9 @@ const baseMedia = require('./baseMedia');
 
 // eslint-disable-next-line no-unused-vars
 function createKey(doc) {
-  return getKeyFromTitle(doc.title);
+  const key = getKeyFromTitle(doc.title);
+  if (!key || key.trim().length < 1) console.log(doc);
+  return key;
 }
 
 const commonSchemaProps = {
