@@ -32,12 +32,12 @@ app.use(bodyParser.json());
 
 app.use(fileUpload());
 
-app.use((req, res, next) => {
+app.use((req, _res, next) => {
   console.log(req.url);
   next();
 });
 
-app.get('/', (req, res) => res.send('Helll'));
+app.get('/', (_req, res) => res.send('Helll'));
 
 app.use('/api', routes);
 app.use('/media', mediaRouter);
