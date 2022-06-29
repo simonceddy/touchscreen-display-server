@@ -16,10 +16,6 @@ async function connect() {
 connect()
   .then(() => {
     console.log('Connected to MongoDB');
-    // TODO remove dropCollection for production
-    // db.connection.dropCollection('categories')
-    //   .then(() => console.log('db reset'))
-    //   .catch(console.error);
   })
   .catch(console.error);
 

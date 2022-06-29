@@ -113,15 +113,14 @@ async function setupDemoDisplay() {
           return {
             title: i.title,
             media,
-            thumbnail: i.thumbnail ? getMediaObject({
-              src: i.thumbnail.src,
-              type: i.thumbnail.type,
-              alt: i.thumbnail.alt || i.title
-            }) : {}
+            thumbnail: tb
           };
         }))
       }
     );
+
+    demo.thumbnail = demo.items.find(({ key }) => key === 'theWhaleboneTabenersHotel')
+      .thumbnail;
     const result = await demo.save();
     console.log(result, demo.items);
     exit(1);
