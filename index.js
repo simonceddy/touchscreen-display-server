@@ -33,7 +33,8 @@ app.use((req, _res, next) => {
   next();
 });
 
-app.get('/', (_req, res) => res.send('Helll'));
+// app.get('/', (_req, res) => res.send('api dev'));
+app.use(express.static('./client'));
 
 app.use('/api', routes);
 app.use('/media', mediaRouter);

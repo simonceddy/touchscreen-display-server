@@ -119,7 +119,8 @@ async function setupDemoDisplay() {
       }
     );
 
-    demo.thumbnail = demo.items.find(({ key }) => key === 'theWhaleboneTabenersHotel')
+    demo.thumbnail = demo.items
+      .find(({ key }) => key === 'theWhaleboneTabenersHotel')
       .thumbnail;
     const result = await demo.save();
     console.log(result, demo.items);
