@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { exit } = require('process');
 const db = require('../db/db');
-const config = require('../config');
 const { Category } = require('../db/models');
 const getExtFromFilename = require('../util/getExtFromFilename');
 const makeThumbnail = require('../util/storage/makeThumbnail');
 const { STORAGE_DIR } = require('../support/consts');
 const getSafeFilename = require('../util/getSafeFilename');
+const connect = require('../db/connect');
 
 // TODO proper title - discuss
-const demoTitle = 'Demo';
+const demoTitle = 'Historical Town Walk';
 
 const items = [
   {
@@ -57,10 +58,6 @@ const items = [
     ]
   },
 ];
-
-async function connect() {
-  await db.connect(config.db.uri);
-}
 
 const getMediaObject = ({ src, alt, type }) => {
   const ext = getExtFromFilename(src);
@@ -123,7 +120,7 @@ async function setupDemoDisplay() {
       .find(({ key }) => key === 'theWhaleboneTabenersHotel')
       .thumbnail;
     const result = await demo.save();
-    console.log(result, demo.items);
+    console.log(result);
     exit(1);
     // persist to database
   } catch (err) {

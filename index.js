@@ -4,13 +4,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const config = require('./config');
-const db = require('./db/db');
 const routes = require('./routes');
 const mediaRouter = require('./routes/media');
-
-async function connect() {
-  await db.connect(config.db.uri);
-}
+const connect = require('./db/connect');
 
 // TODO handle app while/if fails connecting
 connect()

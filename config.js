@@ -5,7 +5,8 @@ const config = {
     origin: process.env.CORS_ALLOW_ORIGIN || 'http://localhost:3000'
   },
   db: {
-    uri: process.env.DB_URI || 'mongodb://localhost:27017/display'
+    uri: process.env.DB_URI || 'mongodb://localhost:27017',
+    collection: process.env.DB_NAME || 'display'
   }
 };
 

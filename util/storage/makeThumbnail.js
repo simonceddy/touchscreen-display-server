@@ -67,7 +67,7 @@ async function makeThumbnail(src, type = 'image') {
         return false;
       }
     }
-    console.log('already done', thumbPath, fs.existsSync(mediaPath));
+    // console.log('already done', thumbPath, fs.existsSync(mediaPath));
   }
   return false;
 }

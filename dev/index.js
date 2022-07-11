@@ -1,16 +1,13 @@
 /* eslint-disable no-unused-vars */
+require('dotenv').config();
 const db = require('../db/db');
-const config = require('../config');
 const setupDataset = require('./setupDataset');
 const data = require('./vstDataset.json');
 const { Category } = require('../db/models');
+const connect = require('../db/connect');
 // const getFlakeId = require('../util/getFlakeId');
 
 // console.info(getFlakeId());
-
-async function connect() {
-  await db.connect(config.db.uri);
-}
 
 function populateDb() {
   connect()
