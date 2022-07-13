@@ -10,8 +10,8 @@ function findAndMakeItemResponse(key, items = []) {
     return false;
   });
 
-  const next = index < lastKey && items[index + 1] ? items[index + 1].key : null;
-  const prev = index > 0 && items[index - 1] ? items[index - 1].key : null;
+  const next = index < lastKey && items[index + 1] ? items[index + 1].key : items[0].key;
+  const prev = index > 0 && items[index - 1] ? items[index - 1].key : items[lastKey].key;
 
   return {
     ...item.toObject(),
