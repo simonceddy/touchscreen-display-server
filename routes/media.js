@@ -21,15 +21,16 @@ const mediaRouter = Router();
  */
 const respondWithFile = (req, res, next, filename) => {
   if (!filename || fs.lstatSync(filename).isDirectory()) {
-    return res.sendStatus(404);
+    res.sendStatus(404);
+  } else {
+    res.sendFile(filename, (err) => {
+      if (err) {
+        next(err);
+      } else {
+        console.log('Sent:', req.params.filename);
+      }
+    });
   }
-  return res.sendFile(filename, (err) => {
-    if (err) {
-      next(err);
-    } else {
-      console.log('Sent:', req.params.filename);
-    }
-  });
 };
 
 // Upload files route
