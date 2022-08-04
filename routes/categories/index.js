@@ -17,6 +17,7 @@ const findAndMakeItemResponse = require('../../util/findAndMakeItemResponse');
 // TODO delete subcategory
 // TODO delete item
 
+// TODO upload files to temp dir - persist only on save
 const router = Router();
 
 // Create a new category

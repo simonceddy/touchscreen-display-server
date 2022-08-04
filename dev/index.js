@@ -30,6 +30,7 @@ function populateDb() {
         categories: categories || [],
         items: items || [],
         thumbnail: thumbnail || null,
+        published: true,
       });
 
       const result = await newCategory.save();

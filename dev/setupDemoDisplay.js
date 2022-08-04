@@ -112,7 +112,8 @@ async function setupDemoDisplay() {
             media,
             thumbnail: tb
           };
-        }))
+        })),
+        published: true,
       }
     );
 
