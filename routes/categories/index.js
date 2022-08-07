@@ -3,6 +3,8 @@ const { Router } = require('express');
 const { Category } = require('../../db/models');
 const findAndMakeItemResponse = require('../../util/findAndMakeItemResponse');
 
+const updateOpts = { returnDocument: 'after ' };
+
 // CATEGORY API ROUTES
 //
 // TODO remove previous state from various update responses, send key instead?
@@ -71,7 +73,7 @@ router.put('/update/:key', (req, res) => {
   const { key } = req.params;
   Category.findOneAndUpdate({ key }, {
     ...req.body
-  }).exec().then((result) => res.json({
+  }, updateOpts).exec().then((result) => res.json({
     result,
     message: 'Updated category',
     success: true
@@ -104,7 +106,7 @@ router.delete('/destroy/:key', (req, res) => {
 
 // Archive a category to non-destructively remove it from the current display
 router.put('/archive/:key', (req, res) => Category
-  .findOneAndUpdate({ key: req.params.key }, { archived: true })
+  .findOneAndUpdate({ key: req.params.key }, { archived: true }, updateOpts)
   .exec()
   .then((result) => res.json({
     message: 'Category archived',
@@ -119,7 +121,7 @@ router.put('/archive/:key', (req, res) => Category
 
 // Unarchive a category, returning it to the current display
 router.put('/unarchive/:key', (req, res) => Category
-  .findOneAndUpdate({ key: req.params.key }, { archived: false })
+  .findOneAndUpdate({ key: req.params.key }, { archived: false }, updateOpts)
   .exec()
   .then((result) => res.json({
     message: 'Category unarchived',
@@ -175,6 +177,25 @@ router.get('/:key/subCategory/:subKey', (req, res) => Category.findOne({
       parent: req.params.key,
       ...result.categories.find((i) => i.key === req.params.subKey).toObject()
     });
+  })
+  .catch(console.error));
+
+router.put('/:key/item/update/:itemKey', (req, res) => Category
+  .findOneAndUpdate({
+    key: req.params.key,
+    items: { $elemMatch: { key: req.params.itemKey } }
+  }, {
+    // TODO
+    $set: {
+      'items.$.title': req.body.title,
+      'items.$.body': req.body.body,
+      'items.$.media': req.body.media,
+    }
+  }, updateOpts)
+  .exec()
+  .then((result) => {
+    res.json('updated');
+    console.log(result);
   })
   .catch(console.error));
 
@@ -253,10 +274,17 @@ router.put('/:key/addSubCategory', (req, res) => {
 
 router.delete('/:key/removeItem/:itemKey', (req, res) => {
   const { itemKey, key } = req.params;
-  Category.findOne({ key }).exec().then((result) => {
-    console.log(result);
-  });
-  res.json(`Deleting ${itemKey} from ${key}`);
+  Category.findOneAndUpdate({ key }, {
+    $pull: {
+      items: { key: itemKey }
+    }
+  }, updateOpts)
+    .exec()
+    .then((result) => {
+      console.log(result);
+      res.json(`Deleted ${itemKey} from ${key}`);
+    })
+    .catch(console.error);
 });
 
 router.delete('/:key/removeSubCategory/:subCategoryKey', (req, res) => {
