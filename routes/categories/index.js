@@ -190,6 +190,7 @@ router.put('/:key/item/update/:itemKey', (req, res) => Category
       'items.$.title': req.body.title,
       'items.$.body': req.body.body,
       'items.$.media': req.body.media,
+      'items.$.thumbnail': req.body.thumbnail
     }
   }, updateOpts)
   .exec()
