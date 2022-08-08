@@ -250,10 +250,15 @@ router.put('/:key/addItem', (req, res) => {
   // Add item to the given category
   // TODO use $push mongo operator
   const { key } = req.params;
-  if (!req.body.title) console.log(req.body);
+  if (!req.body.title) {
+    return res.status(500).json({
+      success: false,
+      message: 'Title is required'
+    });
+  }
   return Category.findOneAndUpdate(
     { key },
-    { $push: { items: { title: req.body.title } } },
+    { $push: { items: { ...req.body } } },
     { new: true, safe: true }
   )
     .exec()
@@ -265,12 +270,24 @@ router.put('/:key/addItem', (req, res) => {
 });
 
 router.put('/:key/addSubCategory', (req, res) => {
-  // Add sub-category to the given category
-  // TODO use $push mongo operator
-  console.log(req.body);
-  return res.json({
-    message: 'Add subcategory'
-  });
+  const { key } = req.params;
+  if (!req.body.title) {
+    return res.status(500).json({
+      success: false,
+      message: 'Title is required'
+    });
+  }
+  return Category.findOneAndUpdate(
+    { key },
+    { $push: { categories: { ...req.body } } },
+    { new: true, safe: true }
+  )
+    .exec()
+    .then((result) => {
+      console.log(result);
+      return res.json(result);
+    })
+    .catch(console.error);
 });
 
 router.delete('/:key/removeItem/:itemKey', (req, res) => {
@@ -290,7 +307,17 @@ router.delete('/:key/removeItem/:itemKey', (req, res) => {
 
 router.delete('/:key/removeSubCategory/:subCategoryKey', (req, res) => {
   const { subCategoryKey, key } = req.params;
-  res.json(`Deleting ${subCategoryKey} from ${key}`);
+  Category.findOneAndUpdate({ key }, {
+    $pull: {
+      categories: { key: subCategoryKey }
+    }
+  }, updateOpts)
+    .exec()
+    .then((result) => {
+      console.log(result);
+      res.json(`Deleted ${subCategoryKey} from ${key}`);
+    })
+    .catch(console.error);
 });
 
 module.exports = router;
