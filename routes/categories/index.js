@@ -3,7 +3,7 @@ const { Router } = require('express');
 const { Category } = require('../../db/models');
 const findAndMakeItemResponse = require('../../util/findAndMakeItemResponse');
 
-const updateOpts = { returnDocument: 'after ' };
+const updateOpts = { returnDocument: 'after' };
 
 // CATEGORY API ROUTES
 //
@@ -199,6 +199,28 @@ router.put('/:key/item/update/:itemKey', (req, res) => Category
     console.log(result);
   })
   .catch(console.error));
+
+// DIRECT SUB UPDATE
+router.put('/:key/subCategory/update/:sub', (req, res) => {
+  console.log(req.body);
+  Category
+    .findOneAndUpdate({
+      key: req.params.key,
+      categories: { $elemMatch: { key: req.params.sub } }
+    }, {
+      $set: {
+        'categories.$.title': req.body.title,
+        'categories.$.items': req.body.items,
+        'categories.$.thumbnail': req.body.thumbnail
+      }
+    }, updateOpts)
+    .exec()
+    .then((result) => {
+      console.log(result);
+      res.json('updated');
+    })
+    .catch(console.error);
+});
 
 // Direct route to given item
 // Returns object with a 'category' property containing the parent category key
