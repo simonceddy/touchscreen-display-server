@@ -134,6 +134,35 @@ router.put('/unarchive/:key', (req, res) => Category
     success: false
   })));
 
+router.put('/publish/:key', (req, res) => Category
+  .findOneAndUpdate({ key: req.params.key }, { published: true }, updateOpts)
+  .exec()
+  .then((result) => res.json({
+    message: 'Category published',
+    result,
+    success: true
+  }))
+  .catch((e) => res.json({
+    message: e.message,
+    e,
+    success: false
+  })));
+
+// Unpublish a category, returning it to the current display
+router.put('/unpublish/:key', (req, res) => Category
+  .findOneAndUpdate({ key: req.params.key }, { published: false }, updateOpts)
+  .exec()
+  .then((result) => res.json({
+    message: 'Category unpublished',
+    result,
+    success: true
+  }))
+  .catch((e) => res.json({
+    message: e.message,
+    e,
+    success: false
+  })));
+
 // List all categories
 router.get('/', (_req, res) => Category.find()
   .exec()
@@ -231,6 +260,12 @@ router.get('/:key/item/:itemKey', (req, res) => Category.findOne({
   .exec()
   .then((result) => {
     if (!result) return res.json('Not found!');
+    // console.log(result);
+    const item = findAndMakeItemResponse(
+      req.params.itemKey,
+      result.items
+    );
+    console.log(item);
     return res.json({
       category: req.params.key,
       ...findAndMakeItemResponse(

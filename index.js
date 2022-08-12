@@ -31,9 +31,9 @@ app.use((req, _res, next) => {
 
 // app.get('/', (_req, res) => res.send('api dev'));
 app.use(express.static('./client'));
-app.use('/admin', express.static('./admin'));
 app.use('/api', routes);
 app.use('/media', mediaRouter);
+app.use('/admin', express.static('./admin'));
 
 app.listen(
   config.port,
