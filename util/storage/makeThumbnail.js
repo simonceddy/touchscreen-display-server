@@ -18,12 +18,12 @@ const genVideoThumb = async (mediaPath, thumbPath) => {
   }
 };
 
-const genImageThumb = async (mediaPath, thumbPath) => {
+const genImageThumb = async (mediaPath, thumbPath, opts = {}) => {
   try {
     const thumb = await imageThumbnail(mediaPath, {
       fit: 'cover',
-      height: 300,
-      width: 400,
+      height: opts.height || 300,
+      width: opts.width || 400,
     });
     fs.writeFileSync(thumbPath, thumb);
     return thumb;
@@ -40,7 +40,7 @@ const genImageThumb = async (mediaPath, thumbPath) => {
  * @param {string} type The type of media
  * @return {Promise<boolean>}
  */
-async function makeThumbnail(src, type = 'image') {
+async function makeThumbnail(src, type = 'image', opts = {}) {
   const mediaPath = path.resolve(STORAGE_DIR, src);
   const thumbPath = path.resolve(thumbDir, src);
   if (!fs.existsSync(thumbDir)) fs.mkdirSync(thumbDir);
@@ -59,7 +59,7 @@ async function makeThumbnail(src, type = 'image') {
             break;
           case 'image':
           default:
-            await genImageThumb(mediaPath, thumbPath);
+            await genImageThumb(mediaPath, thumbPath, opts);
         }
         return true;
       } catch (e) {
