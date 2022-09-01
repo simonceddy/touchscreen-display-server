@@ -3,7 +3,7 @@ const db = require('./db');
 
 async function connect() {
   const connectString = `${config.db.uri}/${config.db.collection}`;
-  console.log(connectString);
+  console.log(`Using collection '${config.db.collection}'`);
   await db.connect(connectString);
 }
 

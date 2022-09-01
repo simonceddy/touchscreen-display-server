@@ -75,10 +75,4 @@ mediaRouter.get('/:filename(*)', (req, res, next) => {
   return respondWithFile(req, res, next, fn);
 });
 
-// TODO Fairly certain this route is pointless - kept here just in  case
-// mediaRouter.get('/thumbs/:filename(*)', (req, res, next) => {
-//   const fn = getMediaPath(`thumbs/${req.params.filename}`);
-//   return respondWithFile(req, res, next, fn);
-// });
-
 module.exports = mediaRouter;
