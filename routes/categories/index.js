@@ -2,6 +2,7 @@
 const { Router } = require('express');
 const { Category } = require('../../db/models');
 const findAndMakeItemResponse = require('../../util/findAndMakeItemResponse');
+const getCategoryQuery = require('../../util/getCategoryQuery');
 
 const updateOpts = { returnDocument: 'after' };
 
@@ -148,7 +149,7 @@ router.put('/publish/:key', (req, res) => Category
     success: false
   })));
 
-// Unpublish a category, returning it to the current display
+// Unpublish a category
 router.put('/unpublish/:key', (req, res) => Category
   .findOneAndUpdate({ key: req.params.key }, { published: false }, updateOpts)
   .exec()
@@ -164,10 +165,14 @@ router.put('/unpublish/:key', (req, res) => Category
   })));
 
 // List all categories
-router.get('/', (_req, res) => Category.find()
-  .exec()
-  .then((results) => res.json(results))
-  .catch(console.error));
+router.get('/', (req, res) => {
+  const { query } = req;
+  console.log(query);
+  Category.find(getCategoryQuery(query))
+    .exec()
+    .then((results) => res.json(results))
+    .catch(console.error);
+});
 
 // Get data for given category
 router.get('/:key', (req, res) => {
