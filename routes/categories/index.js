@@ -3,6 +3,13 @@ const { Router } = require('express');
 const { Category } = require('../../db/models');
 const findAndMakeItemResponse = require('../../util/findAndMakeItemResponse');
 const getCategoryQuery = require('../../util/getCategoryQuery');
+const {
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  archiveCategory,
+  unarchiveCategory
+} = require('./controllers');
 
 const updateOpts = { returnDocument: 'after' };
 
@@ -24,116 +31,19 @@ const updateOpts = { returnDocument: 'after' };
 const router = Router();
 
 // Create a new category
-router.post('/create', (req, res) => {
-  const {
-    title, categories, items, thumbnail
-  } = req.body;
-
-  // If no title is set return an error message
-  if (!title) {
-    return res.json({
-      message: 'title is required',
-      success: false
-    });
-  }
-
-  // TODO if set validate categories and items
-  const newCategory = new Category({
-    title,
-    categories: categories || [],
-    items: items || [],
-    thumbnail: thumbnail || null,
-  });
-
-  return newCategory.save()
-    .then((result) => {
-      if (!result) {
-        return res.json({
-          message: 'error creating category',
-          success: false
-        });
-      }
-      return res.json({
-        message: 'category created',
-        success: true,
-        category: newCategory
-      });
-    })
-    .catch((e) => {
-      console.error(e);
-      return res.json({
-        message: e.message,
-        success: false,
-        error: e,
-      });
-    });
-});
+router.post('/create', createCategory);
 
 // Update category
-router.put('/update/:key', (req, res) => {
-  const { key } = req.params;
-  Category.findOneAndUpdate({ key }, {
-    ...req.body
-  }, updateOpts).exec().then((result) => res.json({
-    result,
-    message: 'Updated category',
-    success: true
-  }))
-    .catch((e) => res.json({
-      message: e.message,
-      success: false,
-      error: e,
-    }));
-});
+router.put('/update/:key', updateCategory);
 
 // Delete category - cannot be undone
-router.delete('/destroy/:key', (req, res) => {
-  const { key } = req.params;
-
-  // TODO media cleanup
-  return Category.findOneAndDelete({ key })
-    .exec()
-    .then((result) => res.json({
-      result,
-      message: 'Deleted category',
-      success: true
-    }))
-    .catch((e) => res.json({
-      message: e.message,
-      success: false,
-      error: e,
-    }));
-});
+router.delete('/destroy/:key', deleteCategory);
 
 // Archive a category to non-destructively remove it from the current display
-router.put('/archive/:key', (req, res) => Category
-  .findOneAndUpdate({ key: req.params.key }, { archived: true }, updateOpts)
-  .exec()
-  .then((result) => res.json({
-    message: 'Category archived',
-    result,
-    success: true
-  }))
-  .catch((e) => res.json({
-    message: e.message,
-    e,
-    success: false
-  })));
+router.put('/archive/:key', archiveCategory);
 
 // Unarchive a category, returning it to the current display
-router.put('/unarchive/:key', (req, res) => Category
-  .findOneAndUpdate({ key: req.params.key }, { archived: false }, updateOpts)
-  .exec()
-  .then((result) => res.json({
-    message: 'Category unarchived',
-    result,
-    success: true
-  }))
-  .catch((e) => res.json({
-    message: e.message,
-    e,
-    success: false
-  })));
+router.put('/unarchive/:key', unarchiveCategory);
 
 router.put('/publish/:key', (req, res) => Category
   .findOneAndUpdate({ key: req.params.key }, { published: true }, updateOpts)
