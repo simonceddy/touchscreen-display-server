@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const { Router } = require('express');
-const { deleteMedia, uploadMedia, getMedia } = require('./media/controllers');
+const { deleteMedia, uploadMedia, getMedia } = require('./controllers');
 
 const mediaRouter = Router();
 

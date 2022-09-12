@@ -2,20 +2,23 @@
 const { Router } = require('express');
 const { Category } = require('../../db/models');
 const findAndMakeItemResponse = require('../../util/findAndMakeItemResponse');
-const getCategoryQuery = require('../../util/getCategoryQuery');
+// const getCategoryQuery = require('../../util/getCategoryQuery');
 const {
   createCategory,
   updateCategory,
   deleteCategory,
   archiveCategory,
-  unarchiveCategory
+  unarchiveCategory,
+  unpublishCategory,
+  publishCategory,
+  getCategories,
+  getCategory
 } = require('./controllers');
 
 const updateOpts = { returnDocument: 'after' };
 
 // CATEGORY API ROUTES
 //
-// TODO remove previous state from various update responses, send key instead?
 // TODO move item category route
 // TODO move subcategory route
 
@@ -27,7 +30,6 @@ const updateOpts = { returnDocument: 'after' };
 // TODO delete subcategory
 // TODO delete item
 
-// TODO upload files to temp dir - persist only on save
 const router = Router();
 
 // Create a new category
@@ -45,66 +47,16 @@ router.put('/archive/:key', archiveCategory);
 // Unarchive a category, returning it to the current display
 router.put('/unarchive/:key', unarchiveCategory);
 
-router.put('/publish/:key', (req, res) => Category
-  .findOneAndUpdate({ key: req.params.key }, { published: true }, updateOpts)
-  .exec()
-  .then((result) => res.json({
-    message: 'Category published',
-    result,
-    success: true
-  }))
-  .catch((e) => res.json({
-    message: e.message,
-    e,
-    success: false
-  })));
+router.put('/publish/:key', publishCategory);
 
 // Unpublish a category
-router.put('/unpublish/:key', (req, res) => Category
-  .findOneAndUpdate({ key: req.params.key }, { published: false }, updateOpts)
-  .exec()
-  .then((result) => res.json({
-    message: 'Category unpublished',
-    result,
-    success: true
-  }))
-  .catch((e) => res.json({
-    message: e.message,
-    e,
-    success: false
-  })));
+router.put('/unpublish/:key', unpublishCategory);
 
 // List all categories
-router.get('/', (req, res) => {
-  const { query } = req;
-  console.log(query);
-  Category.find(getCategoryQuery(query))
-    .exec()
-    .then((results) => res.json(results))
-    .catch(console.error);
-});
+router.get('/', getCategories);
 
 // Get data for given category
-router.get('/:key', (req, res) => {
-  if (req.query.subcategory) {
-    return Category.findOne({
-      key: req.params.key,
-      categories: { $elemMatch: { key: req.query.subcategory } }
-    })
-      .exec()
-      .then((result) => res.json(result))
-      .catch(console.error);
-  }
-  return Category.findOne({
-    key: req.params.key
-  })
-    .exec()
-    .then((result) => {
-      // console.log({ ...result });
-      res.json(result);
-    })
-    .catch(console.error);
-});
+router.get('/:key', getCategory);
 
 // Direct route to given subcategory
 // Returns object with a 'parent' property containing the parent category key
