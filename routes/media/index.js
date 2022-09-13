@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 const { Router } = require('express');
-const { deleteMedia, uploadMedia, getMedia } = require('./controllers');
+const {
+  deleteMedia,
+  uploadMedia,
+  getMedia,
+  uploadThumbnail
+} = require('./controllers');
 
 const mediaRouter = Router();
 
@@ -13,6 +18,8 @@ mediaRouter.post('/upload', uploadMedia);
 mediaRouter.post('/temp', (req, res) => {
 
 });
+
+mediaRouter.post('/thumbnail/upload', uploadThumbnail);
 
 // TODO validate or change how this works
 mediaRouter.delete('/destroy/:filename(*)', deleteMedia);

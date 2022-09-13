@@ -10,9 +10,10 @@ const makeThumbnail = require('./makeThumbnail');
  * Attempt to write files from an upload request to storage.
  * Generates thumbnails where appropriate.
  * @param {array} files Array of files from Request
+ * @param {boolean} makeThumbnails If true generate thumbnails for files
  * @returns {object} Returns an object containing filepaths and any errors.
  */
-function writeFilesToStorage(files = []) {
+function writeFilesToStorage(files = [], makeThumbnails = true) {
   const filepaths = {};
   const errors = {};
   files.map((f) => {
@@ -29,7 +30,7 @@ function writeFilesToStorage(files = []) {
 
         // If file is an image or video then generate a thumbnail
         const mediaType = getTypeFromMime(f.mimetype);
-        if (mediaType !== null) {
+        if (makeThumbnails && mediaType !== null) {
           makeThumbnail(fn, mediaType)
             .then((r) => {
               if (!r) errors[f.name] = 'Error creating thumbnail.';
