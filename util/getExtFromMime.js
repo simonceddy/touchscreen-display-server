@@ -2,6 +2,7 @@
 const exts = {
   'image/png': 'png',
   'video/mp4': 'mp4',
+  'video/x-m4v': 'm4v',
   'image/jpeg': 'jpg',
   'image/gif': 'gif'
 };
