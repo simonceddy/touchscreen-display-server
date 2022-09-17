@@ -5,6 +5,8 @@ const baseCategory = require('./baseCategory');
 
 const categorySchema = new db.Schema({
   ...baseCategory,
+  archived: { type: Boolean, default: false },
+  published: { type: Boolean, default: false },
   categories: [baseCategory],
 });
 

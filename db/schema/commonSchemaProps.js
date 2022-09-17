@@ -15,8 +15,6 @@ const commonSchemaProps = {
     type: String, unique: true, index: true, sparse: true, default: createKey
   },
   thumbnail: baseMedia,
-  archived: { type: Boolean, default: false },
-  published: { type: Boolean, default: false },
 };
 
 module.exports = commonSchemaProps;

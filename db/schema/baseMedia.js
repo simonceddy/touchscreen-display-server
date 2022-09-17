@@ -4,7 +4,8 @@ const baseMedia = {
   type: {
     type: String,
     enum: ['image', 'video', 'audio']
-  }
+  },
+  thumbnail: String
 };
 
 module.exports = baseMedia;
