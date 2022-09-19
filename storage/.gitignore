@@ -11,3 +11,4 @@ testing/*
 /img/*
 /temp/*
 testData.json
+*.log

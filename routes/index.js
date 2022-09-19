@@ -1,22 +1,12 @@
-const { Router } = require('express');
+const express = require('express');
 const categories = require('./categories');
-const testData = require('./testData');
+const mediaRouter = require('./media');
 
-const router = Router();
-router.use('/category', categories);
-router.use('/testing', testData);
+const router = express.Router();
+router.use('/api/category', categories);
+router.use('/media', mediaRouter);
+router.use(express.static('./client'));
 
-// Get data for specific item from the given category
-// TODO query from category item subdocuments
-// TODO broken at present due to errors from subdocument slug generation
-// At present just use category data and route items in frontend
-// router.get('/category/:slug/item/:itemSlug', (req, res) => Item.findOne({
-//   slug: req.params.itemSlug
-// })
-//   .exec()
-//   .then((result) => res.json(result))
-//   .catch(console.error));
-
-// TODO Handle optional sub-category routes
+router.use('/admin', express.static('./admin'));
 
 module.exports = router;

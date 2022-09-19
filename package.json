@@ -25,6 +25,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
+    "express-winston": "^4.2.0",
     "ffmpeg-extract-frames": "^2.0.2",
     "file-type": "^17.1.2",
     "flake-idgen": "^1.4.0",
@@ -32,6 +33,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.2.8",
     "sharp": "^0.30.7",
-    "simple-thumbnail": "^1.6.5"
+    "simple-thumbnail": "^1.6.5",
+    "winston": "^3.8.2"
   }
 }

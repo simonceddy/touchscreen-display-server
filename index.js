@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const config = require('./config');
 const routes = require('./routes');
-const mediaRouter = require('./routes/media');
 const connect = require('./db/connect');
+const logger = require('./support/logger');
 
 // TODO handle app while/if fails connecting
 connect()
@@ -17,24 +17,22 @@ connect()
 
 // TODO add authentication for admin client
 const app = express();
-app.use(cors(config.cors));
 
+// Register middleware
+app.use(logger(config.logger));
+app.use(cors(config.cors));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(fileUpload());
+// app.use((req, _res, next) => {
+//   console.log(req.url);
+//   next();
+// });
 
-app.use((req, _res, next) => {
-  console.log(req.url);
-  next();
-});
+// Register routes
+app.use(routes);
 
-// app.get('/', (_req, res) => res.send('api dev'));
-app.use(express.static('./client'));
-app.use('/api', routes);
-app.use('/media', mediaRouter);
-app.use('/admin', express.static('./admin'));
-
+// Start app
 app.listen(
   config.port,
   () => console.log(`App running at ${config.host}:${config.port}`)
