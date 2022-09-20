@@ -19,15 +19,15 @@ connect()
 const app = express();
 
 // Register middleware
-app.use(logger(config.logger));
+app.use(logger(config.logger()));
 app.use(cors(config.cors));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(fileUpload());
-// app.use((req, _res, next) => {
-//   console.log(req.url);
-//   next();
-// });
+app.use((req, _res, next) => {
+  console.log(req.url);
+  next();
+});
 
 // Register routes
 app.use(routes);
