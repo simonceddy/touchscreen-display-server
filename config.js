@@ -18,8 +18,8 @@ const config = {
     transports: [
       // new winston.transports.Console(),
       new winston.transports.File({
-        filename: path.join(__dirname, 'storage/logs/app.log'),
-        maxsize: 200000
+        filename: path.join(__dirname, 'logs/app.log'),
+        maxsize: 2000000
       }),
     ],
     format: winston.format.combine(
