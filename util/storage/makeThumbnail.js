@@ -33,7 +33,7 @@ const genImageThumb = async (mediaPath, thumbPath, opts = {}) => {
   }
 };
 
-// TODO handle media type
+// TODO handle media type better
 /**
  * Make Thumbnail
  * @param {string} src The path to the source file

@@ -12,7 +12,16 @@ function addItemToCategory(req, res) {
   }
   return Category.findOneAndUpdate(
     { key },
-    { $push: { items: { ...req.body } } },
+    {
+      $push: {
+        items: {
+          title: req.body.title,
+          body: req.body.body || '',
+          thumbnail: req.body.thumbnail,
+          media: req.body.media
+        }
+      }
+    },
     { new: true, safe: true }
   )
     .exec()

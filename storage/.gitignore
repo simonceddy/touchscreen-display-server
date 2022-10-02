@@ -10,5 +10,5 @@ testing/*
 *.db
 /img/*
 /temp/*
-testData.json
+*.json
 *.log
