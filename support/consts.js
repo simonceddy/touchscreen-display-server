@@ -6,6 +6,9 @@ const path = require('path');
  */
 const STORAGE_DIR = path.resolve(`${__dirname}/../storage`);
 
+const CATEGORY_BASE_URL = '';
+
 module.exports = {
-  STORAGE_DIR
+  STORAGE_DIR,
+  CATEGORY_BASE_URL
 };

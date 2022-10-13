@@ -6,8 +6,8 @@ const itemSchema = new db.Schema({
   ...commonSchemaProps,
   body: String,
   media: [baseMedia],
-  // TODO slugs for subdocuments
-  // slug: { type: String, slug: 'title', unique: true },
+  category: { type: String, default: null },
+  subCategory: { type: String, default: null }
 });
 
 module.exports = itemSchema;
