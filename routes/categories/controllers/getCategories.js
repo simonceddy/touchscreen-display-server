@@ -6,7 +6,19 @@ function getCategories(req, res) {
   console.log(query);
   return Category.find(getCategoryQuery(query))
     .exec()
-    .then((results) => res.json(results))
+    .then(async (results) => {
+      if (!results) {
+        return res.json('an error has occurred');
+      }
+      const data = await Promise.all(results.map(async (c) => {
+        const items = await c.getItems();
+        return {
+          ...c.toObject(),
+          items
+        };
+      }));
+      return res.json(data);
+    })
     .catch(console.error);
 }
 

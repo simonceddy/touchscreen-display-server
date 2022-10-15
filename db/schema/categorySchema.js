@@ -18,7 +18,10 @@ const categorySchema = new db.Schema({
 }, {
   methods: {
     getItems() {
-      return db.model('Item').find({ category: this.key }).exec();
+      return db.model('Item').find({
+        category: this.key,
+        subCategory: null
+      }).exec();
     }
   }
 });

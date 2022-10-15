@@ -12,11 +12,11 @@ function getSubCategory(req, res) {
       if (!result) return res.json('Not found!');
       const sub = result.categories.find((i) => i.key === req.params.subKey);
       if (!sub) return res.json('Not found!');
-      const itemList = await getItemsFor(result.key, sub.key);
+      const items = await getItemsFor(result.key, sub.key);
       return res.json({
         parent: result.key,
         ...sub.toObject(),
-        itemList,
+        items,
       });
     })
     .catch(console.error);

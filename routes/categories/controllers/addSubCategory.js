@@ -8,16 +8,24 @@ function addSubCategory(req, res) {
       message: 'Title is required'
     });
   }
+
+  // TODO transform body better
+  // TODO addItems
   return Category.findOneAndUpdate(
     { key },
-    { $push: { categories: { ...req.body } } },
+    {
+      $push: {
+        categories: {
+          title: req.body.title,
+          thumbnail: req.body.thumbnail || null,
+          parent: key
+        }
+      }
+    },
     { new: true, safe: true }
   )
     .exec()
-    .then((result) => {
-      console.log(result);
-      return res.json(result);
-    })
+    .then((result) => res.json(result))
     .catch(console.error);
 }
 

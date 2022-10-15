@@ -59,6 +59,7 @@ router.get('/:key', getCategory);
 router.get('/:key/subCategory/:subKey', getSubCategory);
 
 router.put('/:key/item/update/:itemKey', updateItem);
+router.put('/:key/subCategory/:subKey/item/update/:itemKey', updateItem);
 
 // DIRECT SUB UPDATE
 router.put('/:key/subCategory/update/:sub', updateSubCategory);
@@ -69,9 +70,10 @@ router.get('/:key/item/:itemKey', getItem);
 // And for sub-category items
 
 // TODO add direct subcategory nested item update route
-router.get('/:key/subCategory/:subKey/item/:itemKey', getItemFromSubCategory);
+router.get('/:key/subCategory/:subKey/item/:itemKey', getItem);
 
 router.put('/:key/addItem', addItemToCategory);
+router.put('/:key/subCategory/:subKey/addItem', addItemToCategory);
 
 router.put('/:key/addSubCategory', addSubCategory);
 
