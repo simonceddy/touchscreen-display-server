@@ -62,7 +62,7 @@ router.put('/:key/item/update/:itemKey', updateItem);
 router.put('/:key/subCategory/:subKey/item/update/:itemKey', updateItem);
 
 // DIRECT SUB UPDATE
-router.put('/:key/subCategory/update/:sub', updateSubCategory);
+router.put('/:key/subCategory/update/:subKey', updateSubCategory);
 
 // Direct route to given item
 // Returns object with a 'category' property containing the parent category key

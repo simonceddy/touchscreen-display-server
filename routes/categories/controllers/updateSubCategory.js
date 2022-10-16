@@ -1,22 +1,30 @@
 const { Category } = require('../../../db/models');
 
 function updateSubCategory(req, res) {
-  console.log(req.body);
-  Category
+  // console.log(req.body);
+  const { key, subKey } = req.params;
+  if (!key || !subKey) {
+    return res.json('an error has occurred');
+  }
+  console.log(key);
+  return Category
     .findOneAndUpdate({
-      key: req.params.key,
-      categories: { $elemMatch: { key: req.params.sub } }
+      key,
+      categories: { $elemMatch: { key: subKey } }
     }, {
       $set: {
         'categories.$.title': req.body.title,
-        'categories.$.items': req.body.items,
         'categories.$.thumbnail': req.body.thumbnail
       }
     }, { returnDocument: 'after' })
     .exec()
     .then((result) => {
       console.log(result);
-      res.json('updated');
+      if (!result) {
+        console.log('error!');
+        return res.json('error!');
+      }
+      return res.json('updated');
     })
     .catch(console.error);
 }
