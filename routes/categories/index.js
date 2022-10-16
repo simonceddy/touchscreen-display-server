@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const { Router } = require('express');
+const { Item } = require('../../db/models');
 const {
   createCategory,
   updateCategory,
@@ -69,7 +70,17 @@ router.put('/:key/subCategory/update/:subKey', updateSubCategory);
 router.get('/:key/item/:itemKey', getItem);
 // And for sub-category items
 
-// TODO add direct subcategory nested item update route
+router.get('/:key/items/keys', async (req, res) => {
+  const { key, subKey } = req.params;
+  const keys = await Item.find({
+    category: key,
+    subCategory: subKey || null
+  }, { key })
+    .exec();
+  console.log(keys);
+  return res.json(keys);
+});
+
 router.get('/:key/subCategory/:subKey/item/:itemKey', getItem);
 
 router.put('/:key/addItem', addItemToCategory);
