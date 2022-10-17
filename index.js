@@ -7,6 +7,7 @@ const config = require('./config');
 const routes = require('./routes');
 const connect = require('./db/connect');
 const logger = require('./support/logger');
+const displayConfig = require('./support/displayConfig');
 
 // TODO handle app while/if fails connecting
 connect()
@@ -17,7 +18,7 @@ connect()
 
 // TODO add authentication for admin client
 const app = express();
-
+console.log(displayConfig);
 // Register middleware
 app.use(logger(config.logger()));
 app.use(cors(config.cors));
