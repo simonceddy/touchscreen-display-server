@@ -1,10 +1,15 @@
 const { Item } = require('../../db/models');
 
 async function getItemsFor(category, subCategory = null) {
-  const results = await Item.find({
-    category,
-    subCategory
-  }).exec();
+  const q = {
+    category
+  };
+
+  if (subCategory !== '*') {
+    q.subCategory = subCategory;
+  }
+
+  const results = await Item.find(q).exec();
 
   return results;
 }
