@@ -9,7 +9,6 @@ const connect = require('./db/connect');
 const logger = require('./support/logger');
 const displayConfig = require('./support/displayConfig');
 
-// TODO handle app while/if fails connecting
 connect()
   .then(() => {
     console.log('Connected to MongoDB');

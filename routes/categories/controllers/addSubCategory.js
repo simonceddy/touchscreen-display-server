@@ -1,6 +1,7 @@
 const { Category } = require('../../../db/models');
+const saveItem = require('../../../util/db/saveItem');
 
-function addSubCategory(req, res) {
+async function addSubCategory(req, res) {
   const { key } = req.params;
   if (!req.body.title) {
     return res.status(500).json({
@@ -11,7 +12,7 @@ function addSubCategory(req, res) {
 
   // TODO transform body better
   // TODO addItems
-  return Category.findOneAndUpdate(
+  const result = await Category.findOneAndUpdate(
     { key },
     {
       $push: {
@@ -24,9 +25,21 @@ function addSubCategory(req, res) {
     },
     { new: true, safe: true }
   )
-    .exec()
-    .then((result) => res.json(result))
-    .catch(console.error);
+    .exec();
+  console.log(result);
+  const newSub = result.categories.find((c) => c.title === req.body.title.trim());
+  if (!newSub) return res.json('an error occurred!');
+  if (req.body.items) {
+    await Promise.all(req.body.items.map(async (i) => {
+      await saveItem({
+        ...i,
+        category: key,
+        subCategory: newSub.key
+      });
+    }));
+  }
+
+  return res.json(result);
 }
 
 module.exports = addSubCategory;

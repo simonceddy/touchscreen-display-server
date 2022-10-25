@@ -22,11 +22,20 @@ const config = {
         maxsize: 2000000
       }),
     ],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json()
-    ),
-    meta: true,
+    // format: winston.format.combine(
+    //   winston.format.colorize(),
+    //   winston.format.json()
+    // ),
+    formatter(options) {
+      // - Return string will be passed to logger.
+      // - Optionally, use options.colorize(options.level, <string>) to
+      //   colorize output based on the log level.
+      return `${options.timestamp()} ${
+        config.colorize(options.level, options.level.toUpperCase())} ${
+        options.message ? options.message : ''
+      }${options.meta && Object.keys(options.meta).length ? `\n\t${JSON.stringify(options.meta)}` : ''}`;
+    },
+    // meta: true,
     expressFormat: true,
     colorize: true,
   })
