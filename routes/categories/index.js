@@ -70,6 +70,16 @@ router.get('/:key/item/:itemKey', getItem);
 // And for sub-category items
 
 router.get('/:key/items/keys', async (req, res) => {
+  const { key } = req.params;
+  const keys = await Item.find({
+    category: key,
+  }, { key })
+    .exec();
+  console.log(keys);
+  return res.json(keys);
+});
+
+router.get('/:key/subCategory/:subKey/items/keys', async (req, res) => {
   const { key, subKey } = req.params;
   const keys = await Item.find({
     category: key,

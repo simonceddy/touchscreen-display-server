@@ -3,8 +3,10 @@ const connect = require('../db/connect');
 const { Category, Item } = require('../db/models');
 
 async function refactorItem(item, category, subCategory) {
+  // console.log(item);
+  if (subCategory) console.log(item);
   const i = {
-    ...item.toObject(),
+    ...item,
     category: category.key,
     subCategory: subCategory ? subCategory.key : null
   };
@@ -21,6 +23,7 @@ async function refactorItem(item, category, subCategory) {
 }
 
 async function refactorItemsFrom(category, parent) {
+  // if (parent) console.log(parent);
   if (category.items && category.items[0]) {
     //
     await Promise.all(
@@ -29,9 +32,14 @@ async function refactorItemsFrom(category, parent) {
     );
   }
   if (category.categories && category.categories[0]) {
+    console.log('handle sub items');
     await Promise.all(
       category.categories
-        .map((c) => refactorItemsFrom(c, category))
+        .map(async (c) => {
+          console.log(c);
+          const sub = c.toObject ? c.toObject() : c;
+          await refactorItemsFrom(sub, category);
+        })
     );
   }
   return 1;
@@ -63,15 +71,23 @@ function transformOldCategory(category) {
 connect()
   .then(async () => {
     console.log('connected to mongodb');
-    const results = await Category.find().exec();
+    const results = await Category.find(undefined,).exec();
     // console.log(results);
     await Promise.all(results.map(async (c) => {
-      await refactorItemsFrom(c);
-      await c.update(transformOldCategory(c)).exec();
+      // console.log(results);
+      // console.log(c.key);
+      if (typeof c.toObject !== 'function') {
+        console.log(c);
+        return false;
+      }
+      await refactorItemsFrom(c.toObject());
       return c;
     }));
   })
   .then(() => {
     process.exit(1);
   })
-  .catch(console.error);
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
