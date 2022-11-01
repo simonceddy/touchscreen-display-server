@@ -37,14 +37,39 @@ async function refactorItemsFrom(category, parent) {
   return 1;
 }
 
+/**
+ * Transform an old category to current db structure
+ * @param {Category} category the old category
+ */
+function transformOldCategory(category) {
+  const data = {
+    key: category.key,
+    title: category.title,
+    thumbnail: category.thumbnail,
+    archived: category.archived,
+    published: category.published,
+  };
+  if (category.categories && category.categories.length > 0) {
+    data.categories = category.categories.map((c) => ({
+      thumbnail: c.thumbnail,
+      title: c.title,
+      parent: category.key,
+      key: c.key,
+    }));
+  }
+  return data;
+}
+
 connect()
-  .then(() => {
+  .then(async () => {
     console.log('connected to mongodb');
-    return Category.find().exec()
-      .then(async (results) => {
-        // console.log(results);
-        await Promise.all(results.map((c) => refactorItemsFrom(c)));
-      });
+    const results = await Category.find().exec();
+    // console.log(results);
+    await Promise.all(results.map(async (c) => {
+      await refactorItemsFrom(c);
+      await c.update(transformOldCategory(c)).exec();
+      return c;
+    }));
   })
   .then(() => {
     process.exit(1);

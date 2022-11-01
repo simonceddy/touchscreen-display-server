@@ -19,25 +19,43 @@ const config = {
       // new winston.transports.Console(),
       new winston.transports.File({
         filename: path.join(__dirname, 'logs/app.log'),
-        maxsize: 2000000
+        level: 'info',
+        maxsize: 2000000,
+        maxFiles: 20,
+        format: winston.format.combine(
+          winston.format.timestamp(),
+          winston.format.simple(),
+        )
       }),
+      new winston.transports.File({
+        level: 'warn',
+        filename: path.join(__dirname, 'logs/error.log'),
+        maxsize: 2000000,
+        maxFiles: 20,
+        handleExceptions: true,
+        handleRejections: true,
+        // format: winston.format.combine(
+        //   winston.format.timestamp(),
+        //   winston.format.errors(),
+        //   winston.format.metadata()
+        // )
+      })
     ],
     // format: winston.format.combine(
     //   winston.format.colorize(),
     //   winston.format.json()
     // ),
-    formatter(options) {
-      // - Return string will be passed to logger.
-      // - Optionally, use options.colorize(options.level, <string>) to
-      //   colorize output based on the log level.
-      return `${options.timestamp()} ${
-        config.colorize(options.level, options.level.toUpperCase())} ${
-        options.message ? options.message : ''
-      }${options.meta && Object.keys(options.meta).length ? `\n\t${JSON.stringify(options.meta)}` : ''}`;
-    },
+    // formatter(options) {
+    //   // - Return string will be passed to logger.
+    //   // - Optionally, use options.colorize(options.level, <string>) to
+    //   //   colorize output based on the log level.
+    //   return `${options.timestamp()} ${options.level.toUpperCase()} ${
+    //     options.message ? options.message : ''
+    //   }`;
+    // },
     // meta: true,
     expressFormat: true,
-    colorize: true,
+    // colorize: true,
   })
 };
 

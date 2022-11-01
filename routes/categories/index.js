@@ -15,7 +15,6 @@ const {
   updateItem,
   updateSubCategory,
   getItem,
-  getItemFromSubCategory,
   addItemToCategory,
   addSubCategory,
   removeItemFromCategory,
