@@ -73,9 +73,10 @@ router.get('/:key/items/keys', async (req, res) => {
   const { key } = req.params;
   const keys = await Item.find({
     category: key,
+    subCategory: null,
   }, { key })
     .exec();
-  console.log(keys);
+  // console.log(keys);
   return res.json(keys);
 });
 
@@ -86,7 +87,7 @@ router.get('/:key/subCategory/:subKey/items/keys', async (req, res) => {
     subCategory: subKey || null
   }, { key })
     .exec();
-  console.log(keys);
+  // console.log(keys);
   return res.json(keys);
 });
 

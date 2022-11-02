@@ -11,7 +11,8 @@ function initDisplayConf(collectionName = null) {
     console.log('no display config found');
     // return {};
     loadedConf = {
-      collection: collectionName || config.db.collection
+      collection: collectionName || config.db.collection,
+      'display-title': ''
     };
     if (!fs.existsSync(DISPLAY_CONFIG_PATH)) {
       fs.mkdirSync(DISPLAY_CONFIG_PATH);
