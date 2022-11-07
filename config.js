@@ -22,10 +22,6 @@ const config = {
         level: 'info',
         maxsize: 2000000,
         maxFiles: 20,
-        format: winston.format.combine(
-          winston.format.timestamp(),
-          winston.format.simple(),
-        )
       }),
       new winston.transports.File({
         level: 'warn',
@@ -34,17 +30,13 @@ const config = {
         maxFiles: 20,
         handleExceptions: true,
         handleRejections: true,
-        // format: winston.format.combine(
-        //   winston.format.timestamp(),
-        //   winston.format.errors(),
-        //   winston.format.metadata()
-        // )
       })
     ],
-    // format: winston.format.combine(
-    //   winston.format.colorize(),
-    //   winston.format.json()
-    // ),
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.simple(),
+      winston.format.colorize()
+    ),
     // formatter(options) {
     //   // - Return string will be passed to logger.
     //   // - Optionally, use options.colorize(options.level, <string>) to
