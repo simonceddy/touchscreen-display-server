@@ -9,9 +9,6 @@ async function addSubCategory(req, res) {
       message: 'Title is required'
     });
   }
-
-  // TODO transform body better
-  // TODO addItems
   const result = await Category.findOneAndUpdate(
     { key },
     {
@@ -26,7 +23,6 @@ async function addSubCategory(req, res) {
     { new: true, safe: true }
   )
     .exec();
-  console.log(result);
   const newSub = result.categories.find((c) => c.title === req.body.title.trim());
   if (!newSub) return res.json('an error occurred!');
   if (req.body.items) {
