@@ -99,6 +99,7 @@ router.put('/:key/subCategory/:subKey/addItem', addItemToCategory);
 router.put('/:key/addSubCategory', addSubCategory);
 
 router.delete('/:key/removeItem/:itemKey', removeItemFromCategory);
+router.delete('/:key/subCategory/:subKey/removeItem/:itemKey', removeItemFromCategory);
 
 router.delete('/:key/removeSubCategory/:subCategoryKey', removeSubCategory);
 

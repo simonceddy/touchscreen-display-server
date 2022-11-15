@@ -3,8 +3,8 @@ const deleteItem = require('../../../util/db/deleteItem');
 const deleteItemMedia = require('../../../util/storage/deleteItemMedia');
 
 async function removeItemFromCategory(req, res) {
-  const { itemKey, key, subCategory } = req.params;
-  const result = await deleteItem(itemKey, key, subCategory || null);
+  const { itemKey, key, subKey } = req.params;
+  const result = await deleteItem(itemKey, key, subKey || null);
   if (!result) return res.json('Item was not deleted');
   deleteItemMedia(result);
   console.log(result);

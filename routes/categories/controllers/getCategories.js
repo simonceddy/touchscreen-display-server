@@ -4,7 +4,7 @@ const getCategoryQuery = require('../../../util/getCategoryQuery');
 
 function getCategories(req, res) {
   const { query } = req;
-  console.log(query);
+  // console.log(query);
   return Category.find(getCategoryQuery(query))
     .exec()
     .then(async (results) => {
