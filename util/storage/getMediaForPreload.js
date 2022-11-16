@@ -3,9 +3,9 @@ const thumbsrc = require('./thumbsrc');
 
 async function getThumbnailsForPreload() {
   const thumbs = await Item.find(null, ['thumbnail']).exec();
-  console.log(thumbs);
+  // console.log(thumbs);
   return thumbs
-    .map((i) => (i.thumbnail ? `http://localhost:3030/media/thumbs/${thumbsrc(i.thumbnail.src)}` : null))
+    .map((i) => (i.thumbnail && i.thumbnail.src ? `http://localhost:3030/media/thumbs/${thumbsrc(i.thumbnail.src)}` : null))
     .filter((t) => t !== null);
 }
 
